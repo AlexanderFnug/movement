@@ -26,10 +26,88 @@ body {
     grid-area: 1/1;
 }
 
-#player{
+#player {
+    width: 48px;
+    aspect-ratio: 16/20;
+    background-image: url('images/characters/Character 1.png');
+    background-size: 400%; /* Adjust if your spritesheet layout differs */
+    image-rendering: pixelated;
+}
+
+/* General animation setup */
+.animate {
+    animation-duration: 0.2s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+
+/* Animation for moving upwards */
+.up {
+    animation-name: walkUp;
+}
+
+/* Animation for moving downwards */
+.down {
+    animation-name: walkDown;
+}
+
+/* Animation for moving left */
+.left {
+    animation-name: walkLeft;
+}
+
+/* Animation for moving right */
+.right {
+    animation-name: walkRight;
+}
+
+@keyframes walkUp {
+    from { background-position: -100% 300%; } /* Updated to what was previously for right */
+    to { background-position: -300% 300%; }
+}
+
+@keyframes walkRight {
+    from { background-position: 0% 100%; } /* Updated to what was previously for up */
+    to { background-position: -300% 100%; }
+}
+
+@keyframes walkDown {
+    from { background-position: -100% 0%; } /* Assuming first row for 'down' animation */
+    to { background-position: -300% 0%; }
+}
+
+@keyframes walkLeft {
+    from { background-position: 0% 200%; } /* Assuming third row for 'left' animation */
+    to { background-position: -300% 200%; }
+}
+
+
+
+/* #player{
     width: 48px;
    aspect-ratio: 16/20;
     background-image: url('images/characters/Character 1.png');
-    background-size: 400%;
+    background-size: 400% 400%;
     image-rendering: pixelated;
+    background-position: -100% 0%;
 }
+
+#player.animate{
+    animation-duration: 1s;
+    animation-timing-function: steps(4);
+    animation-iteration-count: infinite;
+}
+
+#player.down {
+    background-position: 0% 0%;
+    animation-name: down;
+}
+
+@keyframes down {
+    from {
+        background-position: 0% 0%;
+    }
+    to {
+        background-position: -400% 0%;
+    }
+} */
