@@ -1,0 +1,35 @@
+body {
+    background: black;
+    display: grid;
+    grid-template-areas: "gamefield";
+    justify-content: center;
+}
+
+#gamefield {
+    border: 2px solid red;
+    width: fit-content;
+    display: grid;
+}
+
+#background {
+    background: #fff2;
+    grid-area: 1/1;
+    width: calc(16 * 32px);
+    height: calc(12 * 32px);
+}
+
+#items {
+    grid-area: 1/1;
+}
+
+#characters {
+    grid-area: 1/1;
+}
+
+#player{
+    width: 48px;
+   aspect-ratio: 16/20;
+    background-image: url('images/characters/Character 1.png');
+    background-size: 400%;
+    image-rendering: pixelated;
+}
