@@ -14,7 +14,7 @@ const controls = { up: false, down: false, left: false, right: false };
 
 const gamefieldDimensions = {
     width: 512, // Width in pixels (16 * 32px from your CSS)
-    height: 384 // Height in pixels (12 * 32px from your CSS)
+    height: 372 // Height in pixels (12 * 32px from your CSS)
 };
 
 

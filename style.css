@@ -1,7 +1,7 @@
 body {
     background: black;
-    display: grid;
-    grid-template-areas: "gamefield";
+    width: 50vw;
+    height: 50vh;
     justify-content: center;
 }
 
