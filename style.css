@@ -2,20 +2,56 @@ body {
     background: black;
     width: 50vw;
     height: 50vh;
-    justify-content: center;
 }
 
 #gamefield {
     border: 2px solid red;
     width: fit-content;
     display: grid;
+    grid-template-columns: repeat(16, 64px);
+    grid-template-rows: repeat(12, 64px);
 }
 
 #background {
     background: #fff2;
     grid-area: 1/1;
-    width: calc(16 * 32px);
-    height: calc(12 * 32px);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-width), max-content);
+    grid-template-rows: repeat(var(--grid-height), max-content);
+}
+
+#background .tile{
+width: var(--tile-size);
+height: var(--tile-size);
+aspect-ratio: 1/1;
+background-repeat: no-repeat;
+background-size: 100%;
+image-rendering: pixelated;
+
+}
+
+.grass {
+    background-image: url('/images/tiles/grass.png');
+}
+
+.wall {
+    background-image: url('/images/tiles/wall.png');
+}
+
+.water {
+    background-image: url('/images/tiles/water.png');
+}
+
+.tree {
+    background-image: url('/images/tiles/tree.png');
+}
+
+.redwall {
+    background-image: url('/images/tiles/redwall.png');
+}
+
+.path {
+    background-image: url('/images/tiles/path.png');
 }
 
 #items {
@@ -81,33 +117,19 @@ body {
     to { background-position: -300% 200%; }
 }
 
-
-
-/* #player{
-    width: 48px;
-   aspect-ratio: 16/20;
-    background-image: url('images/characters/Character 1.png');
-    background-size: 400% 400%;
-    image-rendering: pixelated;
-    background-position: -100% 0%;
+.highlight{
+    outline: 2px dashed yellow;
+    translate: 0 0;
 }
 
-#player.animate{
-    animation-duration: 1s;
-    animation-timing-function: steps(4);
-    animation-iteration-count: infinite;
-}
+.show-reg-point::before{
+    content: "";
+    position: absolute;
+    background-color: cyan;
 
-#player.down {
-    background-position: 0% 0%;
-    animation-name: down;
-}
+    width: 3px;
+    height: 3px;
 
-@keyframes down {
-    from {
-        background-position: 0% 0%;
-    }
-    to {
-        background-position: -400% 0%;
-    }
-} */
+    translate: var(--reg-x) var(--reg-y);
+
+}
