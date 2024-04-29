@@ -4,15 +4,15 @@ window.addEventListener("load", start);
 function start() {
   console.log("JavaScript loaded");
   requestAnimationFrame(tick);
-  window.addEventListener("keydown", handleKey);
-  window.addEventListener("keyup", handleKey);
+  
   createTiles();
   display();
   
 }
 
 // Player and control state
-const player = { x: 0, y: 0, speed: 100, regX: 0, regY: 10 };
+const player = { x: 950, y: 50, speed: 100, regX: 24, regY: 35 };
+const playerHitbox = { x: 15, y: 20, width: 20, height: 40 };
 const controls = { up: false, down: false, left: false, right: false };
 const tiles = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0],
@@ -32,6 +32,12 @@ const tiles = [
 const GRID_WIDTH = tiles[0].length;
 const GRID_HEIGHT = tiles.length;
 const TILE_SIZE = 64;
+const gamefieldDimensions = {
+  // Width in pixels (16 * 64px from your CSS)
+  width: 1024,
+  // Height in pixels (12 * 46px from your CSS)
+  height: 552,
+};
 
 function getTilesAtCoord({ row, col }) {
   return tiles[row][col];
@@ -51,12 +57,7 @@ function positionFromCoord({ row, col }) {
   };
 }
 
-const gamefieldDimensions = {
-  // Width in pixels (16 * 64px from your CSS)
-  width: 1024,
-  // Height in pixels (12 * 46px from your CSS)
-  height: 552,
-};
+
 
 function handleKey(event) {
   const isDown = event.type === "keydown";
@@ -94,16 +95,39 @@ function updateAnimation(element, direction, isActive) {
   }
 }
 
+function getTilesUnderPlayer(player) { 
+    const tiles = [];
+    const playerCoord = coordFromPosition(player.x, player.y);
+    tiles.push(playerCoord);
+    tiles.push(coordFromPosition(player.x + 20, player.y));
+    tiles.push(coordFromPosition(player.x, player.y + 20));
+    tiles.push(coordFromPosition(player.x + 20, player.y + 20));
+    // when tiles.length is 4 every new tile pushes the oldest tile out of the array
+      if(tiles.length === 5) {
+        //remove the first element
+        tiles[0].shift();
+      }
+    return tiles;
+}
+
+
+
 function movePlayer(deltaTime) {
     const potentialX = player.x + (controls.right - controls.left) * player.speed * deltaTime;
     const potentialY = player.y + (controls.down - controls.up) * player.speed * deltaTime;
-  
-    if (!checkCollision(potentialX, player.y)) {
-      player.x = potentialX;
-    }
-    if (!checkCollision(player.x, potentialY)) {
-      player.y = potentialY;
-    }
+  // move player
+    player.x = potentialX;
+    player.y = potentialY;
+
+    // check collision
+    const tiles = getTilesUnderPlayer(player);
+    tiles.forEach(tile => {
+        if(isForbiddenTile(tile)) {
+            player.x = player.x - (controls.right - controls.left) * player.speed * deltaTime;
+            player.y = player.y - (controls.down - controls.up) * player.speed * deltaTime;
+        }
+    });
+
   }
   
   
@@ -111,9 +135,9 @@ function movePlayer(deltaTime) {
   function checkCollision(x, y) {
     // Check multiple points on the player's bounding box
     const topLeft = coordFromPosition(x, y);
-    const topRight = coordFromPosition(x + 47, y); // assuming player width slightly less than TILE_SIZE
-    const bottomLeft = coordFromPosition(x, y + 47); // assuming player height slightly less than TILE_SIZE
-    const bottomRight = coordFromPosition(x + 47, y + 47);
+    const topRight = coordFromPosition(x + 20, y); // assuming player width slightly less than TILE_SIZE
+    const bottomLeft = coordFromPosition(x, y + 20); // assuming player height slightly less than TILE_SIZE
+    const bottomRight = coordFromPosition(x + 15, y + 15);
   
     // Check if any of these points are in forbidden tiles
     return isForbiddenTile(topLeft) || isForbiddenTile(topRight) || 
@@ -133,7 +157,8 @@ function tick(timestamp) {
   showDebugging();
   const deltaTime = (timestamp - lastTimestamp) / 1000;
   lastTimestamp = timestamp;
-
+  window.addEventListener("keydown", handleKey);
+  window.addEventListener("keyup", handleKey);
   movePlayer(deltaTime);
 
   displayPlayerAtPosition();
@@ -200,6 +225,8 @@ function getClassForTile(tile) {
 function showDebugging() {
   showDebugTileUnderPlayer();
   showDebugPlayerRegPoint();
+  showDebugPlayerHitbox();
+  showDebugShowTilesUnderPlayer();
 }
 
 let lastPlayerPosition = { row: 0, col: 0 };
@@ -237,5 +264,31 @@ function showDebugPlayerRegPoint() {
     visualPlayer.style.setProperty("--reg-x", player.regX + "px");
     visualPlayer.style.setProperty("--reg-y", player.regY + "px");
 
+}
+
+function showDebugPlayerHitbox() {
+    const visualPlayer = document.querySelector("#player");
+    if(!visualPlayer.classList.contains("show-player-hitbox")) {
+        visualPlayer.classList.add("show-player-hitbox");
+    }
+    visualPlayer.style.setProperty("--hitbox-x", playerHitbox.x + "px");
+    visualPlayer.style.setProperty("--hitbox-y", playerHitbox.y + "px");
+    visualPlayer.style.setProperty("--hitbox-width", playerHitbox.width + "px");
+    visualPlayer.style.setProperty("--hitbox-height", playerHitbox.height + "px");
+}
+
+function showDebugShowTilesUnderPlayer() {
+  //make sure old highlights are removed
+  const visualTiles = document.querySelectorAll(".tile");
+  visualTiles.forEach(tile => {
+      tile.classList.remove("highlight");
+  }
+  );
+    const tiles = getTilesUnderPlayer(player);
+    tiles.forEach(tile => {
+        highlightTile(tile);
+    });
+   
+    
 }
 //#EndRegion Debugging

@@ -133,3 +133,12 @@ image-rendering: pixelated;
     translate: var(--reg-x) var(--reg-y);
 
 }
+
+.show-player-hitbox::after{
+    content: "";
+    position: absolute;
+    width: var(--hitbox-width);
+    height: var(--hitbox-height);
+    translate: var(--hitbox-x) var(--hitbox-y);
+    outline: 2px dashed red;
+}
