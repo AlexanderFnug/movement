@@ -31,27 +31,27 @@ image-rendering: pixelated;
 }
 
 .grass {
-    background-image: url('/images/tiles/grass.png');
+    background-image: url('./images/tiles/grass.png');
 }
 
 .wall {
-    background-image: url('/images/tiles/wall.png');
+    background-image: url('./images/tiles/wall.png');
 }
 
 .water {
-    background-image: url('/images/tiles/water.png');
+    background-image: url('./images/tiles/water.png');
 }
 
 .tree {
-    background-image: url('/images/tiles/tree.png');
+    background-image: url('./images/tiles/tree.png');
 }
 
 .redwall {
-    background-image: url('/images/tiles/redwall.png');
+    background-image: url('./images/tiles/redwall.png');
 }
 
 .path {
-    background-image: url('/images/tiles/path.png');
+    background-image: url('./images/tiles/path.png');
 }
 
 #items {
